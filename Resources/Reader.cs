@@ -26,9 +26,9 @@ namespace Resources
                 resourcesCount, offsetsTableLength
             );
 
-            var offsets = new int[resourcesCount];
+            var offsets = new uint[resourcesCount];
             for (var i = 0; i < resourcesCount; i++)
-                offsets[i] = _binaryReader.ReadInt32();
+                offsets[i] = _binaryReader.ReadUInt32();
 
             var resourcesOffset = (int) _stream.Position;
             var fileSize = (int) _stream.Length;
@@ -60,7 +60,7 @@ namespace Resources
                     Logger.Warn("Resource is not an image");
                     _stream.Seek(offset, SeekOrigin.Begin);
                     var data = new byte[length];
-                    _stream.Read(data, 0, length);
+                    _stream.Read(data, 0, (int)length);
                     var blob = new Blob(data);
                     resources.Add(blob);
                 }

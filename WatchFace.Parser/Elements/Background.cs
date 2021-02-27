@@ -7,5 +7,17 @@ namespace WatchFace.Parser.Elements
     {
         [ParameterId(1)]
         public Image Image { get; set; }
+
+        [ParameterId(2)]
+        public long Unknown2 { get; set; }
+
+        [ParameterId(3)]
+        public Image Preview { get; set; }
+
+        [ParameterId(4)]
+        public Image FrontImage { get; set; }
+
+        [ParameterId(5)]
+        public Image OtherImage { get; set; }
     }
 }

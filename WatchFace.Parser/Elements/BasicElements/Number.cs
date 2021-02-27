@@ -33,5 +33,11 @@ namespace WatchFace.Parser.Elements.BasicElements
         [ParameterId(8)]
         [ParameterImagesCount]
         public long ImagesCount { get; set; }
+
+        [ParameterId(9)]
+        public long Unknown9 { get; set; }
+
+        [ParameterId(10)]
+        public long Unknown10 { get; set; }
     }
 }

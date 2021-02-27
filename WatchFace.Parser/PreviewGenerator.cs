@@ -7,6 +7,12 @@ namespace WatchFace.Parser
 {
     public class PreviewGenerator
     {
+        public static class CenterOffset
+        {
+            public static int X = 354/2;
+            public static int Y = 306/2;
+        }
+
         public static IEnumerable<Image> CreateAnimation(List<Parameter> descriptor, Bitmap[] images,
             IEnumerable<WatchState> states)
         {
@@ -28,7 +34,7 @@ namespace WatchFace.Parser
 
         private static Image CreateFrame(IDrawable watchFace, Bitmap[] resources, WatchState state)
         {
-            var preview = new Bitmap(176, 176);
+            var preview = new Bitmap(306, 354);
             var graphics = Graphics.FromImage(preview);
             watchFace.Draw(graphics, resources, state);
             return preview;

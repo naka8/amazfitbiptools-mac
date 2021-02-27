@@ -18,5 +18,8 @@ namespace WatchFace.Parser.Elements.ActivityElements
 
         [ParameterId(4)]
         public long? SuffixMilesImageIndex { get; set; }
+
+        [ParameterId(5)]
+        public long? Unknown5 { get; set; }
     }
 }

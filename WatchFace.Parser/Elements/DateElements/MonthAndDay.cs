@@ -15,5 +15,12 @@ namespace WatchFace.Parser.Elements.DateElements
 
         [ParameterId(4)]
         public bool TwoDigitsDay { get; set; }
+
+
+        [ParameterId(5)]
+        public bool Unknown5 { get; set; }
+        [ParameterId(6)]
+        public bool Unknown6 { get; set; }
+
     }
 }

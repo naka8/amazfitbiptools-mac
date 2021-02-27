@@ -17,5 +17,8 @@ namespace WatchFace.Parser.Elements
 
         [ParameterId(4)]
         public Coordinates Unknown4 { get; set; }
+
+        [ParameterId(5)]
+        public Year Year { get; set; }
     }
 }

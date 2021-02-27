@@ -15,9 +15,11 @@ namespace Resources.Image
         private ushort _height;
         private Color[] _palette;
         private ushort _paletteColors;
+        private uint _dataSize;
         private ushort _rowLengthInBytes;
         private bool _transparency;
         private ushort _width;
+        private ushort _step;
 
         public Reader(Stream stream)
         {
@@ -47,15 +49,32 @@ namespace Resources.Image
 
         private void ReadHeader()
         {
+
             Logger.Trace("Reading image header...");
-            _width = _reader.ReadUInt16();
-            _height = _reader.ReadUInt16();
-            _rowLengthInBytes = _reader.ReadUInt16();
-            _bitsPerPixel = _reader.ReadUInt16();
-            _paletteColors = _reader.ReadUInt16();
-            _transparency = _reader.ReadUInt16() > 0;
+
+            _width = (ushort)_reader.ReadUInt16();
+            _height = (ushort)_reader.ReadUInt16();
+
+            _rowLengthInBytes = (ushort)(_reader.ReadUInt16() );
+
+            _bitsPerPixel = (ushort)_reader.ReadUInt16();
+            _step = (ushort)(_bitsPerPixel / 8);
+            _paletteColors = 0;
+            _dataSize = _reader.ReadUInt32();
+            //_transparency = _reader.ReadUInt16() != 0;
+            if (_dataSize == 0 )
+            {
+                _rowLengthInBytes = (ushort)(_step * _width);
+            }
+            else
+            {
+                _rowLengthInBytes = (ushort)(_dataSize / _height);
+                //image data size
+                _reader.ReadUInt32();
+            }
+
             Logger.Trace("Image header was read:");
-            Logger.Trace("Width: {0}, Height: {1}, RowLength: {2}", _width, _height, _rowLengthInBytes);
+            Logger.Trace("Width: {0}, Height: {1}, RowLength: {2} DataSize: {3}", _width, _height, _rowLengthInBytes, _dataSize);
             Logger.Trace("BPP: {0}, PaletteColors: {1}, Transaparency: {2}",
                 _bitsPerPixel, _paletteColors, _transparency
             );
@@ -147,6 +166,7 @@ namespace Resources.Image
                     var bitReader = new BitReader(rowBytes);
                     for (var x = 0; x < _width; x++)
                     {
+                        //if (rowBytes.Length/2 < (x+1)) continue;
                         var firstByte = (int)bitReader.ReadByte();
                         var secondByte = (int)bitReader.ReadByte();
                         var b = (byte)((secondByte >> 3) & 0x1f) << 3;

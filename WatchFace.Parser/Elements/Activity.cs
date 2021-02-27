@@ -20,5 +20,9 @@ namespace WatchFace.Parser.Elements
 
         [ParameterId(5)]
         public FormattedNumber Distance { get; set; }
+
+        [ParameterId(7)]
+        [ParameterImageIndex]
+        public long StarImage { get; set; }
     }
 }

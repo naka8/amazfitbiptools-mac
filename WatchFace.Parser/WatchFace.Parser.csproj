@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,7 +102,7 @@
     <Compile Include="Models\Elements\Battery\BatteryNumberElement.cs" />
     <Compile Include="Models\Elements\Common\ImageSetElement.cs" />
     <Compile Include="Models\Elements\Common\CircularProgressElement.cs" />
-    <Compile Include="Models\Elements\Common\ClockHandElement.cs" />
+    <Compile Include="Models\Elements\Common\ClockHand2Element.cs" />
     <Compile Include="Models\Elements\GoalProgressElement.cs" />
     <Compile Include="Models\Elements\GoalProgress\GoalReachedElement.cs" />
     <Compile Include="Models\Elements\Common\LinearProgressElement.cs" />
@@ -166,6 +166,15 @@
     <Compile Include="Attributes\ParameterIdAttribute.cs" />
     <Compile Include="WatchFace.cs" />
     <Compile Include="Writer.cs" />
+    <Compile Include="Elements\DateElements\Year.cs" />
+    <Compile Include="Elements\DateElements\OneLineYear.cs" />
+    <Compile Include="Elements\AnalogDialFaceElements\ClockHand2.cs" />
+    <Compile Include="Elements\AnalogDialFace2.cs" />
+    <Compile Include="Models\Elements\AnalogDial2Element.cs" />
+    <Compile Include="Models\Elements\AnalogDial2\HoursClockHand2Element.cs" />
+    <Compile Include="Models\Elements\AnalogDial2\MinutesClockHand2Element.cs" />
+    <Compile Include="Models\Elements\AnalogDial2\SecondsClockHand2Element.cs" />
+    <Compile Include="Models\Elements\Common\ClockHandElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Resources\Resources.csproj">
@@ -205,6 +214,9 @@
     <EmbeddedResource Include="WeatherIcons\7.png" />
     <EmbeddedResource Include="WeatherIcons\8.png" />
     <EmbeddedResource Include="WeatherIcons\9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Elements\AnalogDial2\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,6 +28,11 @@ namespace WatchFace.Parser.Models
         public List<Parameter> Children { get; }
         public bool HasChildren => Children != null;
 
+        public override string ToString()
+        {
+            return $"ID:{Id} VALUE:{Value} HASCHILD:{HasChildren}";
+        }
+
         public long Write(Stream stream, int traceOffset = 0)
         {
             var size = (long) 0;
@@ -90,26 +95,63 @@ namespace WatchFace.Parser.Models
 
         public static Parameter ReadFrom(Stream fileStream, int traceOffset = 0)
         {
-            var rawId = ReadByte(fileStream);
+            var rawId = ReadValue(fileStream);
             var id = (byte) ((rawId & 0xf8) >> 3);
             var flags = (ParameterFlags) (rawId & 0x7);
 
-            if (id == 0)
-                throw new ArgumentException("Parameter with zero Id is invalid.");
+            List<Parameter> parameters = null;
 
-            var value = ReadValue(fileStream);
+
+            if (id == 0)
+            {
+                Logger.Trace(() => TraceWithOffset($"Parameter with zero Id is invalid.", traceOffset));
+                //                throw new ArgumentException("Parameter with zero Id is invalid.");
+                return new Parameter(0,0);
+            }
+
+            long value = 0;
+            if (flags.HasFlag(ParameterFlags.Unknown) && flags.HasFlag(ParameterFlags.Unknown2))
+            {
+                byte[] buffer = new byte[4];
+                fileStream.Read(buffer, 0, 4);
+                //value = ReadValue(fileStream);
+            }
+            else if (flags.HasFlag(ParameterFlags.Unknown2))
+            {
+                byte[] buffer = new byte[4];
+//                fileStream.Read(buffer, 0, 4);
+                value = ReadValue(fileStream);
+            }
+            else
             if (flags.HasFlag(ParameterFlags.HasChildren))
             {
+                value = ReadValue(fileStream);
                 Logger.Trace(() => TraceWithOffset($"{id} ({rawId:X2}): {value} bytes", traceOffset));
                 var buffer = new byte[value];
-                fileStream.Read(buffer, 0, (int) value);
+                fileStream.Read(buffer, 0, (int)value);
                 var stream = new MemoryStream(buffer);
 
-                var list = ReadList(stream, traceOffset + 1);
-                return new Parameter(id, list);
+                parameters = ReadList(stream, traceOffset + 1);
+
             }
-            Logger.Trace(() => TraceWithOffset($"{id} ({rawId:X2}): {value} ({value:X2})", traceOffset));
-            return new Parameter(id, value);
+            else
+            {
+                value = ReadValue(fileStream);
+            }
+
+
+            Parameter result;
+            if ( parameters != null)
+            {
+                result = new Parameter(id, parameters);
+            }
+            else
+            {
+                Logger.Trace(() => TraceWithOffset($"{id} ({rawId:X2}): {value} ({value:X2})", traceOffset));
+                result = new Parameter(id, value);
+            }
+
+            return result;
         }
 
         private static long ReadValue(Stream fileStream)
